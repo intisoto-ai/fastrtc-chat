@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fastrtc_chat"
+version = "0.1.0"
+authors = [
+  { name="Inti Soto", email="soto.inti@gmail.com" }
+]
+description = "A multilingual chat application using fastrtc"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "fastrtc",
+    "gradio",
+    "numpy",
+    "google-cloud-translate",
+    "pydub",
+    "google-auth"
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.setuptools]
+packages = ["fastrtc_chat"]
+
+[tool.setuptools.package-data]
+"fastrtc_chat" = ["*"]

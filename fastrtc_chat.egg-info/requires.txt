@@ -1,0 +1,9 @@
+fastrtc
+gradio
+numpy
+google-cloud-translate
+pydub
+google-auth
+
+[dev]
+pytest

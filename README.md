@@ -1,2 +1,3 @@
 # fastrtc-chat
-Initial testing of Hugging Face FastRTC python library
+This is a multilingual chat application using fastrtc python library from Hugging Face
+

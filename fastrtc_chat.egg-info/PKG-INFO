@@ -1,0 +1,20 @@
+Metadata-Version: 2.2
+Name: fastrtc_chat
+Version: 0.1.0
+Summary: A multilingual chat application using fastrtc
+Author-email: Inti Soto <soto.inti@gmail.com>
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: fastrtc
+Requires-Dist: gradio
+Requires-Dist: numpy
+Requires-Dist: google-cloud-translate
+Requires-Dist: pydub
+Requires-Dist: google-auth
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+
+# fastrtc-chat
+This is a multilingual chat application using fastrtc python library from Hugging Face
+
