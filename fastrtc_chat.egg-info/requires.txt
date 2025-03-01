@@ -1,4 +1,4 @@
-fastrtc
+fastrtc[stt]
 gradio
 numpy
 google-cloud-translate

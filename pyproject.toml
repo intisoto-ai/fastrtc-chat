@@ -12,7 +12,7 @@ description = "A multilingual chat application using fastrtc"
 readme = "README.md"
 requires-python = ">=3.8"
 dependencies = [
-    "fastrtc",
+    "fastrtc[stt]", # Added [stt]
     "gradio",
     "numpy",
     "google-cloud-translate",

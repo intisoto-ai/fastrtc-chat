@@ -3,6 +3,7 @@ import numpy as np
 import logging
 from fastrtc_chat.translate import translate_text
 from fastrtc import get_stt_model, get_tts_model
+from fastrtc.text_to_speech.tts import KokoroTTSOptions
 
 log = logging.getLogger(__name__)
 # Configure logging
@@ -20,10 +21,11 @@ except Exception as e:
     exit()
 
 try:
-    tts_model = get_tts_model()
+    tts_model = get_tts_model()  # Correct: No language here
 except Exception as e:
     log.error(f"Error initializing TTS model: {e}")
     exit()
+
 
 def dummy_speech_to_text(audio):
     """Simulates speech-to-text (STT)."""
@@ -32,7 +34,8 @@ def dummy_speech_to_text(audio):
 
 def dummy_text_to_speech(text):
     """Simulates text-to-speech (TTS)."""
-    for audio_chunk in tts_model.stream_tts_sync(text):
+    options = KokoroTTSOptions(lang="es-es", voice="af_bella") # Correct: We set the options here
+    for audio_chunk in tts_model.stream_tts_sync(text, options=options):  # Correct: Pass options to stream_tts_sync
         yield audio_chunk
 
 

@@ -25,7 +25,10 @@ def create_translate_client(credentials_path=None):
         return translate.Client()
 
 # Initialize Google Translate API
-credentials_path = "C:\\Users\\valer\\ai\\keys\\banded-nimbus-411416-5551b908fff0.json"  # Replace with your JSON file path
+credentials_path = os.environ.get("GOOGLE_FASTRTC_KEY") # Now using the env variable
+if credentials_path is None:
+    log.error("Error: Environment variable GOOGLE_FASTRTC_KEY is not set")
+    exit()
 translate_client = create_translate_client(credentials_path)
 
 if translate_client is None:
