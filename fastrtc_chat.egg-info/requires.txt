@@ -4,6 +4,8 @@ numpy
 google-cloud-translate
 pydub
 google-auth
+google-cloud-texttospeech
+playsound
 
 [dev]
 pytest

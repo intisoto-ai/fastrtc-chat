@@ -4,6 +4,7 @@ pyproject.toml
 fastrtc_chat/__init__.py
 fastrtc_chat/app.py
 fastrtc_chat/config.py
+fastrtc_chat/google_tts.py
 fastrtc_chat/speech.py
 fastrtc_chat/translate.py
 fastrtc_chat.egg-info/PKG-INFO
