@@ -12,12 +12,14 @@ description = "A multilingual chat application using fastrtc"
 readme = "README.md"
 requires-python = ">=3.8"
 dependencies = [
-    "fastrtc[stt]", # Added [stt]
+    "fastrtc[stt]",
     "gradio",
     "numpy",
     "google-cloud-translate",
     "pydub",
-    "google-auth"
+    "google-auth",
+    "google-cloud-texttospeech",
+    "playsound" # New dependency
 ]
 
 [project.optional-dependencies]

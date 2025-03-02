@@ -2,8 +2,8 @@
 import numpy as np
 import logging
 from fastrtc_chat.translate import translate_text
-from fastrtc import get_stt_model, get_tts_model
-from fastrtc.text_to_speech.tts import KokoroTTSOptions
+from fastrtc import get_stt_model
+from fastrtc_chat.google_tts import google_text_to_speech
 
 log = logging.getLogger(__name__)
 # Configure logging
@@ -20,23 +20,17 @@ except Exception as e:
     log.error(f"Error initializing STT model: {e}")
     exit()
 
-try:
-    tts_model = get_tts_model()  # Correct: No language here
-except Exception as e:
-    log.error(f"Error initializing TTS model: {e}")
-    exit()
 
-
-def dummy_speech_to_text(audio):
+def speech_to_text(audio):
     """Simulates speech-to-text (STT)."""
     return stt_model.stt(audio)
 
 
-def dummy_text_to_speech(text):
+def text_to_speech(text):
     """Simulates text-to-speech (TTS)."""
-    options = KokoroTTSOptions(lang="es-es", voice="af_bella") # Correct: We set the options here
-    for audio_chunk in tts_model.stream_tts_sync(text, options=options):  # Correct: Pass options to stream_tts_sync
-        yield audio_chunk
+    for audio_chunk in google_text_to_speech(text):
+        if audio_chunk is not None:
+            yield audio_chunk
 
 
 def process_audio(audio: tuple[int, np.ndarray]):
@@ -44,13 +38,24 @@ def process_audio(audio: tuple[int, np.ndarray]):
     Converts speech to text, translates, and converts back to speech.
     """
     try:
-        input_text = dummy_speech_to_text(audio)
-        log.info(f"Input text: {input_text}")
-        translated_text = translate_text(input_text, "es")
+        
+        # we unpack audio to sample_rate, audio
+        sample_rate, audio = audio
+
+        transcribed_text = speech_to_text(audio)
+        log.info(f"Input text: {transcribed_text}")
+
+        translated_text = translate_text(transcribed_text, "es")
         log.info(f"Translated text: {translated_text}")
-        for audio_chunk in dummy_text_to_speech(translated_text):
-            yield audio_chunk
+        for audio_data in text_to_speech(translated_text):
+            if audio_data is not None:
+                # We are sending also the text transcribed and translated
+                sample_rate, chunk = audio_data
+                yield sample_rate, chunk, transcribed_text, translated_text
+
+            else:
+                log.error(f"Error getting audio chunk")
+                yield None
     except Exception as e:
         log.error(f"Error during process audio: {e}")
         yield None
-

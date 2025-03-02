@@ -35,7 +35,7 @@ if translate_client is None:
     log.error("Failed to initialize translation client. Check your credentials.")
     exit()
 
-def translate_text(text, target_lang='es'):
+def translate_text(text, target_lang='es-US'):
     """Translates text to the target language."""
     try:
         result = translate_client.translate(text, target_language=target_lang)
