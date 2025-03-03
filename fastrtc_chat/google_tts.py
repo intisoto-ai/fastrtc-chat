@@ -3,8 +3,6 @@ import logging
 from google.cloud import texttospeech_v1 as texttospeech
 import os
 import numpy as np
-#from playsound import playsound # Removed import
-from datetime import datetime
 
 log = logging.getLogger(__name__)
 # Configure logging
@@ -67,21 +65,15 @@ def google_text_to_speech(text, language_code="es-US", voice_name="es-US-Polyglo
         )
         
         if response.audio_content:
-            # Remove this lines
-            # Save the audio content to a file  
-            #timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")  # Create a timestamp
-            #filename = f"output-{timestamp}.wav"  # Create a unique filename
-            #with open(filename, "wb") as out:
-            #    out.write(response.audio_content)
-            #    log.info(f"Audio content written to file '{filename}'")
-            #playsound(filename)
 
             audio = np.frombuffer(response.audio_content, dtype=np.int16)
             chunk_size = 1024
             for i in range(0, len(audio), chunk_size):
                 chunk = audio[i:i + chunk_size]
                 yield sample_rate, chunk
-
+        else:
+            log.error(f"Error: google return a response without audio")
+            yield None
     except Exception as e:
         log.error(f"Error during google tts: {e}")
         yield None

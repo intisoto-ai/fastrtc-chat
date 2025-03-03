@@ -21,9 +21,9 @@ except Exception as e:
     exit()
 
 
-def speech_to_text(audio):
+def speech_to_text(sample_rate, audio):
     """Simulates speech-to-text (STT)."""
-    return stt_model.stt(audio)
+    return stt_model.stt((sample_rate, audio))
 
 
 def text_to_speech(text):
@@ -31,6 +31,8 @@ def text_to_speech(text):
     for audio_chunk in google_text_to_speech(text):
         if audio_chunk is not None:
             yield audio_chunk
+        else:
+            yield None
 
 
 def process_audio(audio: tuple[int, np.ndarray]):
@@ -38,21 +40,19 @@ def process_audio(audio: tuple[int, np.ndarray]):
     Converts speech to text, translates, and converts back to speech.
     """
     try:
-        
+
         # we unpack audio to sample_rate, audio
         sample_rate, audio = audio
 
-        transcribed_text = speech_to_text(audio)
+        transcribed_text = speech_to_text(sample_rate, audio)
         log.info(f"Input text: {transcribed_text}")
 
         translated_text = translate_text(transcribed_text, "es")
         log.info(f"Translated text: {translated_text}")
         for audio_data in text_to_speech(translated_text):
             if audio_data is not None:
-                # We are sending also the text transcribed and translated
-                sample_rate, chunk = audio_data
-                yield sample_rate, chunk, transcribed_text, translated_text
-
+                #We don't send more the text
+                yield audio_data
             else:
                 log.error(f"Error getting audio chunk")
                 yield None
