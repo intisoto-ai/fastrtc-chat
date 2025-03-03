@@ -22,6 +22,9 @@ def create_google_tts_client(credentials_path=None):
             log.error(f"Error loading credentials from {credentials_path}: {e}")
             return None
     else:
+        if os.environ.get("GOOGLE_FASTRTC_KEY") is None:
+            log.error("Environment variable GOOGLE_FASTRTC_KEY is not set")
+            return None
         try:
             return texttospeech.TextToSpeechClient()
         except Exception as e:
